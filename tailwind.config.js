@@ -4,6 +4,9 @@
 module.exports = {
   mode: 'jit',
   darkMode: 'class',
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+  ],
   content: [
     "./public/**/*.html",
     "./public/*.html",
