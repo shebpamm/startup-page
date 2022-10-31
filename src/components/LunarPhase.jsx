@@ -1,7 +1,11 @@
 import React from "react";
 import * as THREE from "three";
 
-import { SMAAEffect, EffectComposer, EffectPass, RenderPass, PixelationEffect } from "postprocessing";
+import { ColorAverageEffect, SMAAEffect, EffectComposer, EffectPass, RenderPass, PixelationEffect, OutlineEffect, ColorDepthEffect, ShaderPass, OutlineMaterial, EdgeDetectionMaterial, BrightnessContrastEffect } from "postprocessing";
+import { Moon } from "lunarphase-js";
+
+import moonFilterVertex from '../assets/shader/sunVertex.glsl'
+import moonFilterFragment from '../assets/shader/sunFragment.glsl'
 
 var BACKGOUND = 0xffffff
 
@@ -12,7 +16,12 @@ class LunarPhase extends React.Component {
     this.sceneRender = {
       camera: null,
       scene: null,
-      renderer: null
+      renderer: null,
+      stars: []
+    }
+
+    this.state = {
+      orbit_angle: this.props.phase || 0,
     }
 
   }
@@ -20,7 +29,21 @@ class LunarPhase extends React.Component {
   componentDidMount() {
     this.init()
     this.addLight()
+    this.addBackground()
     this.addTexture()
+  }
+
+  setOrbit(deg) {
+    const distance = 10000;
+    const rad = deg * (Math.PI / 180);
+
+    const light = this.sceneRender.light;
+
+    const center = this.sceneRender.moon.position;
+    const x = (center.x + distance) * Math.sin(-rad)
+    const y = (center.z + distance) * Math.cos(rad)
+
+    light.position.set(x, 0, y)
   }
 
   updateOrbit() {
@@ -40,10 +63,14 @@ class LunarPhase extends React.Component {
   renderCanvas() {
     window.requestAnimationFrame(this.renderCanvas.bind(this))
 
-    this.updateOrbit()
+    // this.updateOrbit()
 
     this.sceneRender.renderer.render(this.sceneRender.scene, this.sceneRender.camera)
     this.sceneRender.composer.render();
+  }
+
+  addPass(effect) {
+    this.sceneRender.composer.addPass(new EffectPass(this.sceneRender.camera, effect));
   }
 
   init() {
@@ -52,27 +79,45 @@ class LunarPhase extends React.Component {
     this.sceneRender.clock = new THREE.Clock();
 
     this.sceneRender.scene = new THREE.Scene();
-    this.sceneRender.scene.background = new THREE.Color(BACKGOUND);
+    // this.sceneRender.scene.background = new THREE.Color(BACKGOUND);
 
     this.sceneRender.camera = new THREE.PerspectiveCamera(
       75,
       canvasContainer.offsetWidth / canvasContainer.offsetHeight,
       1,
       65536);
+
     this.sceneRender.renderer = new THREE.WebGLRenderer({
       canvas: document.querySelector('canvas'),
       powerPreference: "high-performance",
       antialias: false,
       stencil: false,
-      depth: false
+      depth: false,
+      alpha: true,
+    });
+
+    this.sceneRender.renderer.setClearColor(0x000000, 0);
+
+    this.sceneRender.filterShaderMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        tDiffuse: { value: null },
+      },
+
+      vertexShader: moonFilterVertex,
+      fragmentShader: moonFilterFragment,
     })
 
     this.sceneRender.composer = new EffectComposer(this.sceneRender.renderer);
     this.sceneRender.composer.setSize(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
     this.sceneRender.composer.addPass(new RenderPass(this.sceneRender.scene, this.sceneRender.camera));
-    // this.sceneRender.composer.addPass(new EffectPass(this.sceneRender.camera, new BloomEffect()));
-    this.sceneRender.composer.addPass(new EffectPass(this.sceneRender.camera, new SMAAEffect()));
-    this.sceneRender.composer.addPass(new EffectPass(this.sceneRender.camera, new PixelationEffect(10)));
+
+    // this.addPass(new ColorDepthEffect({ bits: 8}));
+    this.addPass(new BrightnessContrastEffect({ brightness: 0, contrast: 0 }));
+    this.addPass(new PixelationEffect(8));
+
+    // this.sceneRender.composer.addPass(new EffectPass(this.sceneRender.camera, new SMAAEffect()));
+
+    // this.sceneRender.composer.addPass(new EffectPass(this.sceneRender.camera, new ColorDepthEffect({ bits: 8 })));
 
     this.sceneRender.renderer.setSize(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
     this.sceneRender.renderer.setPixelRatio(window.devicePixelRatio);
@@ -84,11 +129,10 @@ class LunarPhase extends React.Component {
   }
 
   addTexture() {
-    const textureURL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/17271/lroc_color_poles_1k.jpg";
-    const normalURL = "src/assets/img/moon-normal.jpg";
+    // const textureURL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/17271/lroc_color_poles_1k.jpg";
+    const textureURL = "src/assets/img/moon-minimal.jpg";
 
     let textureLoader = new THREE.TextureLoader();
-    this.sceneRender.moonNormal = textureLoader.load(normalURL);
     this.sceneRender.moonTexture = textureLoader.load(textureURL, this.addMoon.bind(this));
   }
 
@@ -110,6 +154,12 @@ class LunarPhase extends React.Component {
     this.sceneRender.moon.position.set(0, 0, 0);
     this.sceneRender.scene.add(this.sceneRender.moon);
 
+    const lunarPercent = Moon.lunarAgePercent()
+
+    const moonDegrees = 220 + 180 * lunarPercent * 1.5;
+
+    this.setOrbit(moonDegrees);
+
     this.renderCanvas();
   }
 
@@ -117,6 +167,35 @@ class LunarPhase extends React.Component {
     this.sceneRender.light = new THREE.PointLight(0xffffff, 1, 0)
     this.sceneRender.light.position.set(0, 0, 0)
     this.sceneRender.scene.add(this.sceneRender.light);
+  }
+
+  addBackground() {
+    const starGeo = new THREE.SphereGeometry(1, 1, 1);
+    const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+
+    var starCluster = new THREE.InstancedMesh(
+      starGeo,
+      starMat,
+      100,
+    );
+
+    this.sceneRender.scene.add(starCluster);
+
+    var dummy = new THREE.Object3D();
+
+    for ( var i = 0 ; i < 100 ; i ++ ) {
+
+      const size = Math.random()*0.5+0.5;
+      
+      dummy.position.set(Math.random()*150-70 , Math.random()*150-70, -60 );
+      dummy.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+      dummy.scale.set(size, size, size);
+      dummy.updateMatrix();
+      starCluster.setMatrixAt(i, dummy.matrix);
+    }
+    starCluster.instanceMatrix.needsUpdate = true;
+
+    this.sceneRender.starCluster = starCluster;
   }
 
   render() {
