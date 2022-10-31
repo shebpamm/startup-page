@@ -109,11 +109,11 @@ class WeatherBox extends React.Component {
     return (
       <>
         <div className="text-center items-center justify-center translate-x-0 translate-y-0">
-          <h1 title={this.state.desc} className="text-3xl pt-5 text-off-white1">{this.state.temperature}</h1>
-          <a className="flex justify-center text-5xl text-off-white1" href={this.state.link}>
+          <h1 title={this.state.desc} className="text-3xl pt-5 text-light">{this.state.temperature}</h1>
+          <a className="flex justify-center text-5xl text-light" href={this.state.link}>
             <span className="text-grey group-hover:text-blue-500">{this.state.icon}</span>
           </a>
-          <p className="text-xl text-off-white1">{this.state.location}</p>
+          <p className="text-xl text-light">{this.state.location}</p>
         </div>
       </>
     );

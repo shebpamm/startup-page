@@ -1,11 +1,75 @@
 //const plugin = require("tailwindcss/plugin");
-//const colors = require("tailwindcss/colors");
+//const colors = require("tailwindcss/colors");tailwin
 
 module.exports = {
   mode: 'jit',
   darkMode: 'class',
   plugins: [
     require('@tailwindcss/aspect-ratio'),
+    require('tailwindcss-themer')({
+      defaultTheme: {
+        // put the default values of any config you want themed
+        // just as if you were to extend tailwind's theme like normal https://tailwindcss.com/docs/theme#extending-the-default-theme
+        extend: {
+          // colors is used here for demonstration purposes
+          colors: {
+            'light': '#f0ebd8',
+            'pale': '#f4ece2',
+            'dim': '#222222', //dark color
+            'accent1': '#a2a182',
+            'accent2': '#687259',
+            'accent3': '#ba6f4d', //Date light, search focus
+            'accent4': '#8e412e' // Date dark, search focus
+          }
+        }
+      },
+      themes: [
+        {
+          name: 'theme-pastel',
+          extend: {
+            colors: {
+              'light': '#DBF5FF',
+              'pale': '#DBF5FF',
+              'dim': '#f8c1b8',
+              'accent1': '#CBB4E2',
+              'accent2': '#CBB4E2',
+              'accent3': '#f8aab6',
+              'accent4': '#f8aab6',
+              'readable': '#a25454',
+              'moon': '#4f4c48'
+            }
+          }
+        },
+        {
+          name: 'theme-nord',
+          extend: {
+            colors: {
+              'light': '#eceff4',
+              'pale': '#e5e9f0',
+              'dim': '#1d2d44',
+              'accent1': '#a2a182',
+              'accent2': '#A3BE8C',
+              'accent3': '#D08770',
+              'accent4': '#BF616A',
+            }
+          }
+        },
+        {
+          name: 'theme-shine',
+          extend: {
+            colors: {
+              'light': '#efefef', //light color
+              'pale': '#dddddd', //sun icon, dark border
+              'dim': '#222222', //dark color
+              'accent1': '#434343',
+              'accent2': '#343434',
+              'accent3': '#909090',
+              'accent4': '#707070'
+            }
+          }
+        },
+      ]
+    })
   ],
   content: [
     "./public/**/*.html",
@@ -17,23 +81,24 @@ module.exports = {
     "./public/**/*.js",
     "./public/*.js",
   ],
+  safelist: [
+    {
+      pattern: /text-.*/,
+      variants: [
+        "theme-pastel"
+      ],
+    },
+    {
+      pattern: /bg-moon/,
+      variants: [
+        "theme-pastel"
+      ],
+    },
+  ],
   variants: {
     opacity: ({ after }) => after(['disabled']),
   },
   theme: {
-    colors: {
-      'off-white1': '#f0ebd8',
-      'off-white2': '#f4ece2',
-      'blue1': '#748cab',
-      'blue2': '#3e5c76',
-      'blue3': '#1d2d44',
-      'blue4': '#0d1321',
-      'green1': '#a2a182',
-      'green2': '#687259',
-      'tan': '#e6cebc',
-      'red1': '#ba6f4d',
-      'red2': '#8e412e',
-    },
     extend: {
       boxShadow: {
         '3xl': 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',

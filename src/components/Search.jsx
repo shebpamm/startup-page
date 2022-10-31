@@ -56,7 +56,7 @@ class SearchBox extends React.Component {
               id='search-button' disabled={this.state.disabled === "4"}
               engine='stack' address='https://stackoverflow.com/?q='></button>
           </div>
-          <input className="items-center w-60 h-5 boarder-none bg-off-white1 border-white border border-solid border-gray-300 rounded-xl focus:border-red2 focus:outline-none"
+          <input className="items-center w-60 h-5 boarder-none bg-light border-white border border-solid border-gray-300 rounded-xl focus:border-accent4 focus:outline-none"
             autoFocus id='search-input' type='text' ref="input" onKeyPress={this.sendSearch} />
         </div>
       </div>
