@@ -1,35 +1,77 @@
 import React from "react";
 
-const getInitialTheme = () => {
+const getInitialMode = () => {
   if (typeof window !== "undefined" && window.localStorage) {
-    const storedPrefs = window.localStorage.getItem("color-theme");
-    if (typeof storedPrefs === "string") {
+    const storedPrefs = window.localStorage.getItem("dark-mode");
+    if (typeof storedPrefs === "boolean") {
       return storedPrefs;
     }
 
     const userMedia = window.matchMedia("(prefers-color-scheme: dark)");
     if (userMedia.matches) {
-      return "dark";
+      return true;
     }
   }
 
-  // If you want to use dark theme as the default, return 'dark' instead
-  return "light";
+  // If you want to use dark theme as the default, return 'true' instead
+  return false;
 };
 
+const getInitialTheme = () => {
+  if (typeof window !== "undefined" && window.localStorage) {
+    const storedPrefs = window.localStorage.getItem("theme");
+    if (typeof storedPrefs === "string") {
+      return storedPrefs;
+    }
+  }
+
+  // If you want to use dark theme as the default, return 'true' instead
+  return 'defaultTheme';
+};
+
+export const themes = ['defaultTheme', 'theme-nord', 'theme-pastel', 'theme-shine'];
+
 export const ThemeContext = React.createContext();
+export const DarkModeContext = React.createContext();
 
-export default function ThemeProvider({ initialTheme, children }) {
-  const [theme, setTheme] = React.useState(getInitialTheme);
+export function DarkModeProvider({ initialMode, children }) {
+  const [darkMode, setDarkMode] = React.useState(getInitialMode);
 
-  const rawSetTheme = (rawTheme) => {
+  const rawSetMode = (isDark) => {
     const root = window.document.documentElement;
-    const isDark = rawTheme === "dark";
 
     root.classList.remove(isDark ? "light" : "dark");
-    root.classList.add(rawTheme);
+    root.classList.add(isDark ? "dark" : "light");
 
-    localStorage.setItem("color-theme", rawTheme);
+    localStorage.setItem("dark-mode", isDark);
+  };
+
+  if (initialMode) {
+    rawSetMode(initialMode);
+  }
+
+  React.useEffect(() => {
+    rawSetMode(darkMode);
+  }, [darkMode]);
+
+  return (
+    <DarkModeContext.Provider value={{ darkMode: darkMode, setDarkMode: setDarkMode }}>
+      {children}
+    </DarkModeContext.Provider>
+  );
+};
+
+export function ThemeProvider({ initialTheme, children }) {
+  const [theme, setTheme] = React.useState(getInitialTheme);
+
+  const rawSetTheme = (theme) => {
+    const root = window.document.documentElement;
+
+    themes.forEach(t => root.classList.remove(t));
+
+    root.classList.add(theme);
+
+    localStorage.setItem("theme", theme);
   };
 
   if (initialTheme) {
@@ -41,7 +83,7 @@ export default function ThemeProvider({ initialTheme, children }) {
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: theme, setTheme: setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

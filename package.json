@@ -21,6 +21,7 @@
     "fast-glob": "^3.2.6",
     "immer": "^9.0.3",
     "lunarphase-js": "^1.0.10",
+    "mdb-react-ui-kit": "^5.0.0",
     "patch-package": "^6.4.7",
     "path": "^0.12.7",
     "postprocessing": "^6.29.1",
