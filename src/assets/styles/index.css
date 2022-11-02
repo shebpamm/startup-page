@@ -3,3 +3,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* Theme the clock hands with tailwind */
+  .react-clock > .react-clock__hand > .react-clock__hand__body {
+    @apply bg-light
+  }
+
+  /* Hide the clock face border */
+  .react-clock > .react-clock__face {
+    border: 0 !important;
+  }
+}

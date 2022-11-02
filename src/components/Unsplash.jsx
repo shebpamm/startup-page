@@ -1,23 +1,21 @@
-import React, { Component } from "react";
-import { render } from 'react-dom';
+import React, { Component, useState } from "react";
 import axios from "axios";
 
+export const UnsplashContext = React.createContext()
 
-class Unsplash extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      photos: [],
-    }
-  }
 
-  componentDidMount() {
+export function UnsplashProvider({ children }) {
+  const [unsplashData, setUnsplashData] = React.useState();
 
+  React.useEffect(() => {
     const accessKey = import.meta.env.VITE_ACCESS_KEY;
     //const category = 'chicago';//process.env.REACT_APP_UNSPLASH_PHOTO_CATEGORY;
-    var categoryArray = ['frog', 'glacier', 'minimal', 'miami', 'ocean', 'sea', 'forest',]
+    var categoryArray = ['frog', 'glacier', 'minimal', 'ocean', 'sea', 'forest',]
     var categoryIndex = Math.floor(Math.random() * categoryArray.length);
     var category = categoryArray[categoryIndex];
+
+    // override category
+    category = 'minimal'
 
     // https://unsplash.com/documentation#get-a-random-photo
     axios.get("https://api.unsplash.com//search/photos?random", {
@@ -31,27 +29,34 @@ class Unsplash extends Component {
     })
       .then(res => {
 
-        //console.log(res);
+        // console.log(res);
 
-        var totalFound = res.data.results.length;
-        var randNum = Math.floor(Math.random() * totalFound)
-        var full = res.data.results[randNum].urls.raw;
-
-        this.setState({ photos: full });
+        setUnsplashData(res);
       })
       .catch(err => {
         console.log(err);
       });
+  }, []);
 
-  }
+  return (
+    <UnsplashContext.Provider value={unsplashData}>
+      {children}
+    </UnsplashContext.Provider>
+  );
+};
 
-  render() {
-    return (
-      <div className="relative rounded-xl overflow-hidden h-full bg-center bg-no-repeat border-0 dark:border-4 dark:border-pale">
-        <img className="min-w-full min-h-full" src={this.state.photos} />
-      </div>
-    );
-  }
-}
+export const Unsplash = () => {
+  const unsplashData = React.useContext(UnsplashContext);
+  if(!unsplashData) return null
+  console.log(unsplashData);
 
-export default Unsplash
+  var totalFound = unsplashData.data.results.length;
+  var randNum = Math.floor(Math.random() * totalFound)
+  var small = unsplashData.data.results[randNum].urls.small;
+
+  return (
+    <div className="select-none	relative rounded-xl overflow-hidden h-full bg-center bg-no-repeat border-0 dark:border-4 dark:border-pale">
+      <img className="object-cover min-w-full min-h-full" src={small} />
+    </div>
+  );
+};

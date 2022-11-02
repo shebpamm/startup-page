@@ -3,8 +3,12 @@ import React from "react";
 import {
   WiRain, WiSprinkle, WiCloudy, WiThunderstorm, WiDaySunny,
   WiSnowflakeCold, WiFog, WiRaindrops, WiDust, WiDayHaze,
-  WiTornado, WiDayCloudy, WiNightCloudy, WiCloud, WiMoonWaxingCrescent3
+  WiTornado, WiDayCloudy, WiNightCloudy, WiCloud,
+  WiMoonWaxingCrescent3, WiHumidity
 } from "react-icons/wi";
+
+import { BiWind } from "react-icons/bi";
+import {BsChevronDoubleDown} from "react-icons/bs";
 
 const key = import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY;
 const unit = import.meta.env.VITE_OPEN_WEATHER_MAP_UNIT;
@@ -136,13 +140,16 @@ export default class WeatherCard extends React.Component {
         <div className="flex justify-between items-center">
           <div className="">
             <div>
-              <span className="ms-1">{this.state.windSpeed} m/s</span>
+              <BiWind className="inline"></BiWind>
+              <span className="ms-1"> {this.state.windSpeed} m/s</span>
             </div>
             <div>
+              <WiHumidity className="inline text-xl"></WiHumidity>
               <span className="ms-1">{this.state.humidity}%</span>
             </div>
             <div>
-              <span className="ms-1">{this.state.pressure} mBar</span>
+              <BsChevronDoubleDown className="inline text-l"></BsChevronDoubleDown>
+              <span className="ms-1"> {this.state.pressure} mBar</span>
             </div>
           </div>
           <a className="flex justify-center text-7xl" href={this.state.link}>

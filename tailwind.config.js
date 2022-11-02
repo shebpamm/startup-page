@@ -82,6 +82,7 @@ module.exports = {
     "./public/*.js",
   ],
   safelist: [
+    "border-light",
     {
       pattern: /text-.*/,
       variants: [
