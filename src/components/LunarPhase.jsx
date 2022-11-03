@@ -4,8 +4,7 @@ import * as THREE from "three";
 import { ColorAverageEffect, SMAAEffect, EffectComposer, EffectPass, RenderPass, PixelationEffect, OutlineEffect, ColorDepthEffect, ShaderPass, OutlineMaterial, EdgeDetectionMaterial, BrightnessContrastEffect } from "postprocessing";
 import { Moon } from "lunarphase-js";
 
-import moonFilterVertex from '../assets/shader/sunVertex.glsl'
-import moonFilterFragment from '../assets/shader/sunFragment.glsl'
+import moonTextureImage from '../assets/img/moon-minimal.jpg?url';
 
 var BACKGOUND = 0xffffff
 
@@ -98,15 +97,6 @@ class LunarPhase extends React.Component {
 
     this.sceneRender.renderer.setClearColor(0x000000, 0);
 
-    this.sceneRender.filterShaderMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        tDiffuse: { value: null },
-      },
-
-      vertexShader: moonFilterVertex,
-      fragmentShader: moonFilterFragment,
-    })
-
     this.sceneRender.composer = new EffectComposer(this.sceneRender.renderer);
     this.sceneRender.composer.setSize(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
     this.sceneRender.composer.addPass(new RenderPass(this.sceneRender.scene, this.sceneRender.camera));
@@ -129,11 +119,8 @@ class LunarPhase extends React.Component {
   }
 
   addTexture() {
-    // const textureURL = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/17271/lroc_color_poles_1k.jpg";
-    const textureURL = "src/assets/img/moon-minimal.jpg";
-
     let textureLoader = new THREE.TextureLoader();
-    this.sceneRender.moonTexture = textureLoader.load(textureURL, this.addMoon.bind(this));
+    this.sceneRender.moonTexture = textureLoader.load(moonTextureImage, this.addMoon.bind(this));
   }
 
   addMoon() {
@@ -183,12 +170,12 @@ class LunarPhase extends React.Component {
 
     var dummy = new THREE.Object3D();
 
-    for ( var i = 0 ; i < 100 ; i ++ ) {
+    for (var i = 0; i < 100; i++) {
 
-      const size = Math.random()*0.5+0.5;
-      
-      dummy.position.set(Math.random()*150-70 , Math.random()*150-70, -60 );
-      dummy.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+      const size = Math.random() * 0.5 + 0.5;
+
+      dummy.position.set(Math.random() * 150 - 70, Math.random() * 150 - 70, -60);
+      dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
       dummy.scale.set(size, size, size);
       dummy.updateMatrix();
       starCluster.setMatrixAt(i, dummy.matrix);

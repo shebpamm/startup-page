@@ -7,10 +7,10 @@ import ClockTile from "../components/Clock";
 import { Unsplash, UnsplashProvider } from "../components/Unsplash";
 import SearchBox from "../components/Search";
 import LunarPhase from "../components/LunarPhase";
-import WeatherBox from "../components/Weather";
 import { DarkModeToggle, ThemeToggle } from "../components/Toggle";
 import { DarkModeProvider, ThemeProvider } from "../components/ThemeContext";
 import WeatherCard from "../components/WeatherCard";
+import MiniCalendar from "../components/MiniCalendar";
 
 
 // assets
@@ -37,19 +37,20 @@ export default function Index() {
             <div className="bg-dim text-black rounded-xl col-span-2 h-36 w-80 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale"><SearchBox /></div>
             <div className="bg-dim rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale overflow-y-auto">
               <ul className="text-left [&>*]:font-serif text-light theme-pastel:text-readable m-0 pl-5 pt-1 before:block before:absolute left-0 w-1 h-3 border-solid border-teal-600 relative list-none mb-2">
-                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center">news</li>
-                <li className=""><a href="https://news.ycombinator.com/">hacker news</a></li>
-                <li><a href="https://medium.com">medium</a></li>
-                <li><a href="https://12ft.io">12ft</a></li>
+                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center">homelab</li>
+                <li><a href="https://hypervisor.sorsa.cloud">hypervisor</a></li>
+                <li><a href="https://router.sorsa.cloud">router</a></li>
+                <li><a href="http://nitrogen.sorsa.cloud:32400">plex</a></li>
+                <li><a href="https://hass.opcode.xyz">hass</a></li>
               </ul>
             </div>
             <div className="bg-light text-black rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none"><Unsplash /></div>
             <div className="bg-dim text-black rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale overflow-y-auto">
               <ul className="text-left [&>*]:font-serif text-light theme-pastel:text-readable m-0 pl-5 pt-1 before:block before:absolute left-0 w-1 h-3 border-solid border-teal-600 relative list-none mb-2">
-                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center">work</li>
-                <li><a href="https://stackoverflow.com">stackoverflow</a></li>
-                <li><a href="https://github.com">github</a></li>
-                <li><a href="https://gist.github.com/timothypholmes">gists</a></li>
+                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center">comms</li>
+                <li><a href="https://gmail.com">gmail</a></li>
+                <li><a href="https:/outlook.office.com">outlook</a></li>
+                <li><a href="https://libera.chat/">libera.chat</a></li>
               </ul>
             </div>
             {/* row 2 */}
@@ -63,29 +64,27 @@ export default function Index() {
             {/* row 3 */}
             <div className="bg-dim text-black rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale overflow-y-auto">
               <ul className="text-left [&>*]:font-serif text-light theme-pastel:text-readable m-0 pl-5 pt-1 before:block before:absolute left-0 w-1 h-3 border-solid border-teal-600 relative list-none mb-2">
-                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center">finance</li>
-                <li><a href="https://secure.tdameritrade.com/">tdameritrade</a></li>
-                <li><a href="https://tradingeconomics.com/calendar">calendar</a></li>
-                <li><a href="https://finviz.com">screener</a></li>
+                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center">linux</li>
+                <li><a href="https://search.nixos.org/packages">nixpkgs</a></li>
+                <li><a href="https://awesomewm.org/apidoc">awesome</a></li>
+                <li><a href="https://hydra.nixos.org/">hydra</a></li>
               </ul>
             </div>
             <div className="bg-dim theme-pastel:bg-moon rounded-xl col-span-2 row-span-2 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale aspect-w-1 aspect-h-1"><LunarPhase /></div>
             <div className="bg-dim text-black rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale overflow-y-auto">
               <ul className="text-left [&>*]:font-serif text-light theme-pastel:text-readable m-0 pl-5 pt-1 before:block before:absolute left-0 w-1 h-3 border-solid border-teal-600 relative list-none mb-2">
-                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center scroll-smooth">social</li>
-                <li><a href="https://www.reddit.com">reddit</a></li>
-                <li><a href="https://www.youtube.com">youtube</a></li>
-                <li><a href="https://www.linkedin.com">linkedin</a></li>
-                <li><a href="https://twitter.com/home">twitter</a></li>
+                <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center scroll-smooth">genshin</li>
+                <li><a href="https://genshin-impact-map.appsample.com">map</a></li>
+                <li><a href="https://frzyc.github.io/genshin-optimizer">optimizer</a></li>
+                <li><a href="https://paimon.moe/">paimon.moe</a></li>
+                <li><a href="https://docs.google.com/spreadsheets/u/0/d/1T6pAFnkcnuEm3UWVzwBqOnv24DBM-ix2dSzlsvy9hPA">furniture</a></li>
               </ul>
             </div>
 
             {/* row 4 */}
             <div className="bg-dim rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale overflow-y-auto">
-              <ul className=" text-left text-light theme-pastel:text-readable m-0 pl-5 pt-1 before:block before:absolute left-0 w-1 h-3 border-solid border-teal-600 relative list-none mb-2">
+              <ul className=" text-left [&>*]:font-serif text-light theme-pastel:text-readable m-0 pl-5 pt-1 before:block before:absolute left-0 w-1 h-3 border-solid border-teal-600 relative list-none mb-2">
                 <li className="font-black text-lg underline underline-offset-4 decoration-2 decoration-light text-center">other</li>
-                <li><a href="https://www.reddit.com/r/startpages/">r/startpages</a></li>
-                <li><a href="https://www.mercari.com">mercari</a></li>
                 <li><a href="https://www.google.com/maps/">maps</a></li>
               </ul>
             </div>
@@ -99,7 +98,7 @@ export default function Index() {
               </ThemeProvider>
             </div>
             <div className="text-black rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none"><Unsplash /></div>
-            <div className="bg-accent2 dark:bg-accent1 text-black rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale"></div>
+            <div className="bg-accent2 dark:bg-accent1 text-black rounded-xl col-span-1 h-36 w-36 shadow-4xl dark:shadow-none border-0 dark:border-4 dark:border-pale"><MiniCalendar /></div>
 
             {/* row 5 */}
             {/*

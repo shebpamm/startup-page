@@ -47,8 +47,7 @@ export function UnsplashProvider({ children }) {
 
 export const Unsplash = () => {
   const unsplashData = React.useContext(UnsplashContext);
-  if(!unsplashData) return null
-  console.log(unsplashData);
+  if (!unsplashData) return null
 
   var totalFound = unsplashData.data.results.length;
   var randNum = Math.floor(Math.random() * totalFound)

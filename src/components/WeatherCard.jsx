@@ -8,7 +8,7 @@ import {
 } from "react-icons/wi";
 
 import { BiWind } from "react-icons/bi";
-import {BsChevronDoubleDown} from "react-icons/bs";
+import { BsChevronDoubleDown } from "react-icons/bs";
 
 const key = import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY;
 const unit = import.meta.env.VITE_OPEN_WEATHER_MAP_UNIT;
@@ -125,7 +125,6 @@ export default class WeatherCard extends React.Component {
           <h6 className="font-bold text-l">
             {this.state.location}
           </h6>
-          <h6>00:00</h6>
         </div>
 
         <div className="flex flex-col text-center mt-5 mb-4">

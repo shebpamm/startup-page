@@ -830,6 +830,10 @@ video {
   grid-auto-flow: row dense;
 }
 
+.grid-cols-7{
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
 .flex-col{
   flex-direction: column;
 }
@@ -848,6 +852,10 @@ video {
 
 .justify-between{
   justify-content: space-between;
+}
+
+.gap-2{
+  gap: 0.5rem;
 }
 
 .gap-y-6{
@@ -1000,6 +1008,16 @@ video {
   background-color: rgba(var(--colors-moon), 1);
 }
 
+.bg-accent2{
+  --tw-bg-opacity: 1;
+  background-color: rgba(var(--colors-accent2), var(--tw-bg-opacity));
+}
+
+.\!bg-accent4{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgba(var(--colors-accent4), var(--tw-bg-opacity)) !important;
+}
+
 .bg-light{
   --tw-bg-opacity: 1;
   background-color: rgba(var(--colors-light), var(--tw-bg-opacity));
@@ -1013,11 +1031,6 @@ video {
 .bg-accent4{
   --tw-bg-opacity: 1;
   background-color: rgba(var(--colors-accent4), var(--tw-bg-opacity));
-}
-
-.bg-accent2{
-  --tw-bg-opacity: 1;
-  background-color: rgba(var(--colors-accent2), var(--tw-bg-opacity));
 }
 
 .bg-google-icon{
@@ -1046,6 +1059,10 @@ video {
 
 .object-cover{
   object-fit: cover;
+}
+
+.p-5{
+  padding: 1.25rem;
 }
 
 .p-2{
@@ -1118,6 +1135,10 @@ video {
 
 .align-text-bottom{
   vertical-align: text-bottom;
+}
+
+.font-serif{
+  font-family: 'Noto Serif', serif;
 }
 
 .font-sans{
@@ -31808,6 +31829,23 @@ video {
   .xl\:grid-cols-7{
     grid-template-columns: repeat(7, minmax(0, 1fr));
   }
+}
+
+.\[\&\>\*\]\:aspect-h-1>*{
+  --tw-aspect-h: 1;
+}
+
+.\[\&\>\*\]\:h-2>*{
+  height: 0.5rem;
+}
+
+.\[\&\>\*\]\:w-2>*{
+  width: 0.5rem;
+}
+
+.\[\&\>\*\]\:bg-light>*{
+  --tw-bg-opacity: 1;
+  background-color: rgba(var(--colors-light), var(--tw-bg-opacity));
 }
 
 .\[\&\>\*\]\:font-serif>*{
