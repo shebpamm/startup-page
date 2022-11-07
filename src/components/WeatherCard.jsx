@@ -107,9 +107,7 @@ export default class WeatherCard extends React.Component {
   }
 
   componentDidMount() {
-    if (import.meta.env.VITE_LAT) {
-      this.fetchData(import.meta.env.VITE_LAT, import.meta.env.VITE_LON);
-    } else if (navigator.geolocation) { // get location
+    if (navigator.geolocation) { // get location
       navigator.geolocation.getCurrentPosition((position) => {
         this.fetchData(position.coords.latitude, position.coords.longitude);
       });
