@@ -1,3 +1,12 @@
-FROM nginx
+FROM node:current-alpine
 
-COPY ./dist /usr/share/nginx/html
+WORKDIR /app
+
+COPY package.json /app/
+COPY package-lock.json /app/
+
+RUN npm ci --legacy-peer-deps
+
+COPY . /app
+
+ENTRYPOINT ["npm", "run", "serve"]
