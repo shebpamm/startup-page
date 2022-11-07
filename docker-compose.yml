@@ -1,0 +1,34 @@
+---
+version: "3.9"
+services:
+  normal:
+    image: shebpamm/startpage:latest
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 2251:8000
+
+  dev:
+    image: shebpamm/startpage:dev
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.dev
+    ports:
+      - 2251:8000
+
+  tiny:
+    image: shebpamm/startpage:tiny
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.tiny
+    ports:
+      - 2251:80
+
+  nginx:
+    image: shebpamm/startpage:nginx
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.nginx
+    ports:
+      - 2251:80
