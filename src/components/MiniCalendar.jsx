@@ -34,7 +34,7 @@ export default class MiniCalendar extends React.Component {
             let d = [];
 
             for (let i = 1; i <= daysInMonth(this.state.date); i++) {
-              if (i === this.state.date.getDay()) d.push(<div className="!bg-accent4"> </div>)
+              if (i === this.state.date.getDate()) d.push(<div className="!bg-accent4"> </div>)
               else d.push(<div> </div>);
             }
             return d;
