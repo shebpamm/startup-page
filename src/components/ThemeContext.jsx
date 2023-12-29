@@ -3,8 +3,11 @@ import React from "react";
 const getInitialMode = () => {
   if (typeof window !== "undefined" && window.localStorage) {
     const storedPrefs = window.localStorage.getItem("dark-mode");
-    if (typeof storedPrefs === "boolean") {
-      return storedPrefs;
+    if (storedPrefs === "true") {
+      return true
+    }
+    if (storedPrefs === "false") {
+      return false
     }
 
     const userMedia = window.matchMedia("(prefers-color-scheme: dark)");
