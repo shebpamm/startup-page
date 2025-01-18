@@ -1,5 +1,6 @@
 import React from "react";
 import * as THREE from "three";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import { ColorAverageEffect, SMAAEffect, EffectComposer, EffectPass, RenderPass, PixelationEffect, OutlineEffect, ColorDepthEffect, ShaderPass, OutlineMaterial, EdgeDetectionMaterial, BrightnessContrastEffect } from "postprocessing";
 import { Moon } from "lunarphase-js";
@@ -112,10 +113,14 @@ class LunarPhase extends React.Component {
     this.sceneRender.renderer.setSize(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
     this.sceneRender.renderer.setPixelRatio(window.devicePixelRatio);
 
+    const controls = new OrbitControls(this.sceneRender.camera, this.sceneRender.renderer.domElement);
+
     //this.sceneRender.renderer.setPixelRatio(window.devicePixelRatio);
     //this.sceneRender.renderer.setSize(326, 316);
     this.sceneRender.camera.position.set(0, 0, 15);
     this.sceneRender.camera.lookAt(0, 0, 0)
+    controls.update();
+
   }
 
   addTexture() {
@@ -163,18 +168,28 @@ class LunarPhase extends React.Component {
     var starCluster = new THREE.InstancedMesh(
       starGeo,
       starMat,
-      100,
+      200,
     );
 
     this.sceneRender.scene.add(starCluster);
 
     var dummy = new THREE.Object3D();
 
-    for (var i = 0; i < 100; i++) {
+    const radius = 70; // Fixed distance from the center point
 
+    for (var i = 0; i < 200; i++) {
       const size = Math.random() * 0.5 + 0.5;
 
-      dummy.position.set(Math.random() * 150 - 70, Math.random() * 150 - 70, -60);
+      // Generate random spherical coordinates
+      const theta = Math.random() * Math.PI * 2; // Azimuthal angle [0, 2π]
+      const phi = Math.acos(2 * Math.random() - 1); // Polar angle [0, π]
+
+      // Convert spherical coordinates to Cartesian coordinates
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+
+      dummy.position.set(x, y, z);
       dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
       dummy.scale.set(size, size, size);
       dummy.updateMatrix();
@@ -184,6 +199,7 @@ class LunarPhase extends React.Component {
 
     this.sceneRender.starCluster = starCluster;
   }
+
 
   render() {
     return (
