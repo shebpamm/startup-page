@@ -22,6 +22,7 @@ class LunarPhase extends React.Component {
 
     this.state = {
       orbit_angle: this.props.phase || 0,
+      enablePixelation: true,
     }
 
   }
@@ -31,6 +32,29 @@ class LunarPhase extends React.Component {
     this.addLight()
     this.addBackground()
     this.addTexture()
+    this.bindEvents()
+  }
+
+  componentWillUnmount() {
+    this.unbindEvents()
+  }
+
+  handleKeyDown(event) {
+    if (event.key.toLowerCase() === 't') {
+      this.setState({ enablePixelation: !this.state.enablePixelation }, () => {
+        this.sceneRender.composer.passes[2].enabled = this.state.enablePixelation
+        this.sceneRender.composer.passes[2].renderToScreen = this.state.enablePixelation
+        this.sceneRender.composer.passes[1].renderToScreen = !this.state.enablePixelation
+      });
+    }
+  }
+  
+  bindEvents() {
+    window.addEventListener('keydown', this.handleKeyDown.bind(this));
+  }
+
+  unbindEvents() {
+    window.removeEventListener('keydown', this.handleKeyDown.bind(this));
   }
 
   setOrbit(deg) {
